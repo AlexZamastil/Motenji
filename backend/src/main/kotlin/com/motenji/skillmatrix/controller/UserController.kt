@@ -1,10 +1,7 @@
 package com.motenji.skillmatrix.controller
 
-import com.motenji.skillmatrix.DTO.RegisterDTO
 import com.motenji.skillmatrix.DTO.UserDTO
 import com.motenji.skillmatrix.service.UserService
-import com.motenji.skillmatrix.utility.ResponseWrapper
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -12,17 +9,16 @@ import org.springframework.web.bind.annotation.*
 class UserController(val userService: UserService) {
 
     @PostMapping("/register")
-    fun register(@RequestBody registerDto: RegisterDTO){
+    fun register(@RequestBody registerDto: UserDTO){
         userService.registerUser(registerDto)
     }
-
     @PostMapping("/login")
     fun login(@RequestBody nickname: String, password: String){
         userService.login(nickname,password)
     }
 
-    @GetMapping("/getDetails/{id}")
-    fun getUser(@PathVariable id: String): ResponseEntity<ResponseWrapper<UserDTO>> {
-        return userService.getUserDetails(id.toLong())
+    @GetMapping("/get/{id}")
+    fun getUser(@PathVariable id: String){
+        //todo
     }
 }

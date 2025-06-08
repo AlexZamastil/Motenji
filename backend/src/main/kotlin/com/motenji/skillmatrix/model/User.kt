@@ -1,6 +1,5 @@
 package com.motenji.skillmatrix.model
 
-import com.motenji.skillmatrix.DTO.UserDTO
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -20,7 +19,3 @@ data class User(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val goals: List<Goal> = listOf()
 )
-fun convertToUserDTO(user: User): UserDTO {
-    return UserDTO(user.nickname)
-}
-
