@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface GoalRepository : JpaRepository<Goal, Long>{
+
     fun findGoalById(id: Long): Goal
+    fun findGoalByName(name: String): Goal
 }
