@@ -12,8 +12,9 @@ import jakarta.persistence.Table
 @Table(name = "users")
 data class User(
     @Id
+    @Column(name = "user_id")
     val id: Long,
-    @Column(name = "id")
+    @Column(name = "name")
     val nickname: String,
     @Column(name = "password")
     val password: String,
