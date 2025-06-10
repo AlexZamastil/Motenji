@@ -1,19 +1,15 @@
 package com.motenji.skillmatrix.model
 
 import com.motenji.skillmatrix.DTO.UserDTO
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "users")
 data class User(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    val id: Long,
+    val id: Long?,
     @Column(name = "name")
     val nickname: String,
     @Column(name = "password")
