@@ -18,12 +18,17 @@ data class Goal(
     @Column(name = "deadline")
     val deadline: LocalDate,
     @Column(name = "progress")
-    val progress: Double,
+    var progress: Double,
     @Column(name = "created")
     val created: LocalDateTime = LocalDateTime.now(),
     @ManyToOne
     @JoinColumn(name = "user_id")
     val user: User
-)
+) {
+    fun updateProgress(contribution: Contribution) {
+    progress += (contribution.contributionPercentage ?: 0.0).toDouble()
+    }
+}
+
 
 

@@ -1,5 +1,6 @@
 package com.motenji.skillmatrix.controller
 
+import com.motenji.skillmatrix.DTO.GoalContributionDTO
 import com.motenji.skillmatrix.DTO.GoalCreateDTO
 import com.motenji.skillmatrix.DTO.GoalInfoDTO
 import com.motenji.skillmatrix.service.GoalService
@@ -15,8 +16,13 @@ class GoalController (val goalService: GoalService){
     fun createGoal(@RequestBody goalCreateDTO: GoalCreateDTO): ResponseEntity<ResponseWrapper<String>> {
         return goalService.createGoal(goalCreateDTO)
     }
-    @GetMapping("/getUserGoals/{id}")
-    fun getUserGoals(@PathVariable("id") userId: Long): ResponseEntity<ResponseWrapper<List<GoalInfoDTO>>> {
+    @PostMapping("/contributeToGoal/{goalId}")
+    fun contributeToGoal(@PathVariable("goalId") goalId: Long, @RequestBody goalContributionDTO: GoalContributionDTO): ResponseEntity<ResponseWrapper<String>> {
+        return goalService.contributeToGoal(goalId, goalContributionDTO)
+    }
+
+    @GetMapping("/getUserGoals/{userId}")
+    fun getUserGoals(@PathVariable("userId") userId: Long): ResponseEntity<ResponseWrapper<List<GoalInfoDTO>>> {
         return goalService.getAllGoalsOfUser(userId)
     }
 
