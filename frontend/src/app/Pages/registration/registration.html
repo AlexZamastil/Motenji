@@ -1,0 +1,9 @@
+<form (ngSubmit)=register() #form="ngForm">
+
+    <input matInput #input name="nickname" maxlength="10" [(ngModel)]="nickname" placeholder="Enter nickname" />
+    
+    <input matInput #input name="password" type="password" [(ngModel)]="password" placeholder="Enter password"/>
+
+    <button (click)="register()" name="nickname" matButton="tonal" type="submit" color="red"  >Submit</button>
+
+</form>
