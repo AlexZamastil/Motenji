@@ -4,6 +4,8 @@ import com.motenji.skillmatrix.DTO.RegisterDTO
 import com.motenji.skillmatrix.DTO.UserDTO
 import com.motenji.skillmatrix.service.UserService
 import com.motenji.skillmatrix.utility.ResponseWrapper
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -12,13 +14,13 @@ import org.springframework.web.bind.annotation.*
 class UserController(val userService: UserService) {
 
     @PostMapping("/register")
-    fun register(@RequestBody registerDto: RegisterDTO){
+    fun register(@RequestBody @Valid registerDto: RegisterDTO){
         userService.registerUser(registerDto)
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody nickname: String, password: String){
-        userService.login(nickname,password)
+    fun login(@RequestBody @Valid  userDTO: UserDTO){
+        userService.login(userDTO)
     }
 
     @GetMapping("/getDetails/{id}")

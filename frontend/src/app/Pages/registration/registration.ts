@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import {CallAPI} from '../../Services/call-api';
 
 @Component({
   selector: 'app-registration',
@@ -17,9 +18,11 @@ import { FormsModule } from '@angular/forms';
 export class Registration {
       nickname = ''
       password = ''
-
+      passwordConfirm = ''
+      constructor(private api: CallAPI) {
+      }
       register() {
         console.log('trying to register user: ' + this.nickname + ' ' + this.password)
-
+        this.api.POST("user/register", {"username": this.nickname, "password": this.password, "passwordConfirm": this.passwordConfirm})
       }
 }

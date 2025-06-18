@@ -27,7 +27,7 @@ class GoalService(
             measurable = createDTO.measurable,
             deadline = createDTO.deadline,
             progress = createDTO.progress,
-            user = userRepository.findUserById(createDTO.userId)
+            user = userRepository.findUserById(createDTO.userId) ?: return ResponseFactory.badRequest("User not found")
             )
         goalRepository.save(goal)
         return ResponseFactory.success("goal added successfully")

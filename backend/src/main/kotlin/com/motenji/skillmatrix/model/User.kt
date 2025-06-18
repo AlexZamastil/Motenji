@@ -18,6 +18,6 @@ data class User(
     val goals: List<Goal> = listOf()
 )
 fun convertToUserDTO(user: User): UserDTO {
-    return UserDTO(user.nickname)
+    return UserDTO(user.id, user.nickname, user.password)
 }
 
