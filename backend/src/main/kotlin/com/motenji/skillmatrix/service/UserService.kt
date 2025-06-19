@@ -5,20 +5,24 @@ import com.motenji.skillmatrix.DTO.UserDTO
 import com.motenji.skillmatrix.model.User
 import com.motenji.skillmatrix.model.convertToUserDTO
 import com.motenji.skillmatrix.repository.UserRepository
+import com.motenji.skillmatrix.security.JwtService
 import com.motenji.skillmatrix.utility.ResponseFactory
 import com.motenji.skillmatrix.utility.ResponseWrapper
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(val userRepo: UserRepository) {
+class UserService(
+    val userRepo: UserRepository,
+    private val jwtService: JwtService
+) {
 
     fun login(userDTO: UserDTO): ResponseEntity<ResponseWrapper<String>> {
         val userId = userDTO.id ?: return ResponseFactory.notFound("User info missing")
         val user = userRepo.findUserById(userId) ?: return ResponseFactory.notFound("User not found")
         if (user.password == userDTO.password) {
-            // send token
-            return ResponseFactory.success("login successful")
+            val token = jwtService.generateToken(user)
+            return ResponseFactory.success("login successful with token: $token")
         } else {
             return ResponseFactory.badRequest("incorrect password")
         }
@@ -30,7 +34,8 @@ class UserService(val userRepo: UserRepository) {
         }
         val user = User(null, registerDto.username, registerDto.password, emptyList())
         userRepo.save(user)
-        return ResponseFactory.success("User registered")
+        val token = jwtService.generateToken(user)
+        return ResponseFactory.success("User registered with token: $token")
     }
 
     fun getUserDetails(id: Long): ResponseEntity<ResponseWrapper<UserDTO>> {

@@ -13,7 +13,7 @@ data class Contribution(
     @Column(name = "name")
     val name: String,
     @Column(name = "percentage")
-    val contributionPercentage: Int?,
+    val percentageIncrement: Int?,
     @Column(name = "date")
     val date: LocalDate,
     @ManyToOne

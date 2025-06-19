@@ -1,6 +1,7 @@
 package com.motenji.skillmatrix.controller
 
-import com.motenji.skillmatrix.DTO.GoalContributionDTO
+import com.motenji.skillmatrix.DTO.ContributionDTO
+import com.motenji.skillmatrix.DTO.GoalContributionsDTO
 import com.motenji.skillmatrix.DTO.GoalCreateDTO
 import com.motenji.skillmatrix.DTO.GoalInfoDTO
 import com.motenji.skillmatrix.service.GoalService
@@ -18,7 +19,7 @@ class GoalController (val goalService: GoalService){
         return goalService.createGoal(goalCreateDTO)
     }
     @PostMapping("/contributeToGoal/{goalId}")
-    fun contributeToGoal(@PathVariable("goalId") goalId: Long, @RequestBody @Valid goalContributionDTO: GoalContributionDTO): ResponseEntity<ResponseWrapper<String>> {
+    fun contributeToGoal(@PathVariable("goalId") goalId: Long, @RequestBody @Valid goalContributionDTO: ContributionDTO): ResponseEntity<ResponseWrapper<String>> {
         return goalService.contributeToGoal(goalId, goalContributionDTO)
     }
 
@@ -27,4 +28,17 @@ class GoalController (val goalService: GoalService){
         return goalService.getAllGoalsOfUser(userId)
     }
 
+    @GetMapping("/getGoalInfo/{goalId}")
+    fun getGoalInfo(@PathVariable("goalId") goalId: Long): ResponseEntity<ResponseWrapper<GoalContributionsDTO>> {
+        return goalService.getGoalInfo(goalId)
+    }
+
+    @DeleteMapping("/deleteGoal/{goalId}")
+    fun deleteGoal(@PathVariable("goalId") goalId: Long): ResponseEntity<ResponseWrapper<String>> {
+        return goalService.deleteGoal(goalId)
+    }
+    @DeleteMapping("/deleteContribution/{contributionId}")
+    fun deleteContribution(@PathVariable("contributionId") contributionId: Long): ResponseEntity<ResponseWrapper<String>> {
+        return goalService.deleteContribution(contributionId)
+    }
 }

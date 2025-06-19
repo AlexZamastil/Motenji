@@ -4,11 +4,11 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDate
 
-data class GoalContributionDTO(
+data class ContributionDTO(
     @field:NotBlank(message = "Goal missing")
     val goalId: Long,
-    val contributionName: String,
-    val contributionPercentage: Int?,
+    val name: String,
+    val percentageIncrement: Int?,
     @field:NotNull(message = "Contribution date missing")
     val date: LocalDate,
 )

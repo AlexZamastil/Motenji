@@ -2,11 +2,11 @@ package com.motenji.skillmatrix.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -14,10 +14,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @EnableWebSecurity
 class SecurityConfiguration {
     private val HEADERS = arrayOf("Authorization", "content-type")
+    private val EXPOSED_HEADERS = arrayOf("Authorization")
     private val ORIGINS = arrayOf(System.getenv("fe_origin"))
-    private val METHODS = arrayOf("GET", "POST", "PUT", "DELETE")
+    private val METHODS = arrayOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity, authFilter: AuthFilter): SecurityFilterChain {
 
         http.cors{}
             .csrf {it.disable()}
@@ -26,7 +27,9 @@ class SecurityConfiguration {
                 it.requestMatchers("/user/**").authenticated()
                 it.anyRequest().permitAll()
             }
-            .httpBasic(Customizer.withDefaults())
+            .sessionManagement() {it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)}
+            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter::class.java)
+
         return http.build()
     }
     @Bean
@@ -35,6 +38,7 @@ class SecurityConfiguration {
             override fun addCorsMappings(registry: CorsRegistry) {
                 registry.addMapping("/**")
                     .allowedHeaders(*HEADERS)
+                    .exposedHeaders(*EXPOSED_HEADERS)
                     .allowedOrigins(*ORIGINS)
                     .allowedMethods(*METHODS)
             }

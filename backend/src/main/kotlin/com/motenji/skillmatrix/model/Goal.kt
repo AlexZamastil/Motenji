@@ -24,11 +24,7 @@ data class Goal(
     @ManyToOne
     @JoinColumn(name = "user_id")
     val user: User
-) {
-    fun updateProgress(contribution: Contribution) {
-    progress += (contribution.contributionPercentage ?: 0.0).toDouble()
-    }
-}
+)
 
 
 
