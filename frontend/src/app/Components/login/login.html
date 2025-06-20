@@ -1,1 +1,10 @@
-<p>login works!</p>
+<h2>Login</h2>
+<form (ngSubmit)=login() #form="ngForm">
+
+  <input matInput  name="nickname" maxlength="10" [(ngModel)]="nickname" placeholder="Enter nickname" />
+  <br/>
+  <input matInput  name="password" type="password" [(ngModel)]="password" placeholder="Enter password"/>
+  <br/>
+  <button matButton="tonal" type="submit" color="red"  >Submit</button>
+
+</form>

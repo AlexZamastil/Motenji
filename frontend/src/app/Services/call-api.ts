@@ -23,10 +23,8 @@ export class CallAPI {
   GET(apiName: String): Observable<any> {
     return this.http.get(`${this.baseUrl}/${apiName}`)
   }
-  POST(apiName: String, data: any): void{
+  POST(apiName: String, data: any): Observable<any>{
     console.log("calling API: " + this.baseUrl + apiName, {headers: this.headers}, data);
-    this.http.post(`${this.baseUrl}/${apiName}`,data, {headers: this.headers}).subscribe(response => {
-      console.log(response)
-    })
+    return this.http.post(`${this.baseUrl}/${apiName}`,data, {headers: this.headers})
   }
 }

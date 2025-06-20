@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  margin: 0.5em;
+  padding: 2em;
+}
+.displayFlex{
+  width: 50vw;
+}
+.displayFlex2{
+  width: 50vw;
+}
+

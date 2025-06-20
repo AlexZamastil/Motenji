@@ -1,5 +1,9 @@
 <nav>
-  <a style="text-decoration: none; padding: 10px" routerLink="" routerLinkActive="active">Home </a>
+  <a routerLink="" routerLinkActive="active">Home</a>
 
-  <a style="text-decoration: none; padding: 10px" routerLink="register" routerLinkActive="active">Register </a>
+  @if (!isLoggedIn()) {
+    <a routerLink="signIn" routerLinkActive="active">Sign in</a>
+  } @else {
+    <a routerLink="profile" routerLinkActive="active">Profile</a>
+  }
 </nav>
