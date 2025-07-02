@@ -1,0 +1,13 @@
+<h2>Registration</h2>
+<form (ngSubmit)=register() #form="ngForm">
+
+  <input matInput name="nickname" maxlength="10" [(ngModel)]="nickname" placeholder="Enter nickname"/>
+  <br/>
+  <input matInput name="password" type="password" [(ngModel)]="password" placeholder="Enter password"/>
+  <br/>
+  <input matInput name="password again" type="password" [(ngModel)]="passwordConfirm"
+         placeholder="Confirm password"/>
+  <br/>
+  <button matButton="tonal" type="submit" color="red">Submit</button>
+
+</form>

@@ -1,0 +1,21 @@
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+padding: 1em
+}
+.mainContainer div {
+  margin: 0.1em;
+}
+
+.userInfo{
+  background-color: aqua;
+  width: 24vw;
+}
+.mainGraph{
+  background-color: darkseagreen;
+  width: 50vw;
+}
+.goalsOverview{
+  background-color: lightgoldenrodyellow;
+  width: 24vw;
+}

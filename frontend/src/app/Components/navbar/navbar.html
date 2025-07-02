@@ -1,0 +1,10 @@
+<nav>
+  <a routerLink="" routerLinkActive="active">Home</a>
+
+  @if (!isLoggedIn()) {
+    <a routerLink="signIn" routerLinkActive="active">Sign in</a>
+  } @else {
+    <a routerLink="profile" routerLinkActive="active">Profile</a>
+    <a routerLink="chat" routerLinkActive="active">Live chat</a>
+  }
+</nav>

@@ -1,0 +1,24 @@
+* {background-color: lightskyblue}
+body {
+  background-color: lightskyblue;
+  margin: 0;
+  text-align: center;
+  padding: 1em;
+}
+
+nav{
+  display: flex;
+justify-content: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: black;
+  display: inline-block;
+  transition: font-size 0.25s ease, color 0.25s ease;
+  padding: 1em;
+}
+
+nav a:hover {transform: scale(1.2); color: gold}
+nav a:visited {text-decoration: none; color: black}
+

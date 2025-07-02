@@ -1,0 +1,7 @@
+<input [(ngModel)]="from" placeholder="Your name" matInput>
+<input [(ngModel)]="text" placeholder="Message" matInput>
+<button (click)="sendMessage()">Send Message</button>
+
+@for (msg of messages; track messages){
+  <div><strong>{{ msg.username }}:</strong> {{ msg.message }}</div>
+}
