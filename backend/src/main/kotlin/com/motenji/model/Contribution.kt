@@ -1,22 +1,21 @@
 package com.motenji.model
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDate
 
-@Entity
 @Table(name = "contribution")
 data class Contribution(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "contribution_id")
+    @Column("contribution_id")
     val contributionId: Long?,
-    @Column(name = "name")
+    @Column("name")
     val name: String,
-    @Column(name = "percentage")
+    @Column("percentage")
     val percentageIncrement: Int?,
-    @Column(name = "date")
+    @Column("date")
     val date: LocalDate,
-    @ManyToOne
-    @JoinColumn(name = "goal_id")
-    val goal: Goal
+    @Column("goal_id")
+    val goalId: Long
 )

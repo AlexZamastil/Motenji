@@ -1,21 +1,19 @@
 package com.motenji.model
 
 import com.motenji.DTO.UserDTO
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 
-@Entity
-@Table(name = "users")
+@Table("users")
 data class User(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column("user_id")
     val id: Long?,
-    @Column(name = "name")
+    @Column("name")
     val nickname: String,
-    @Column(name = "password")
+    @Column("password")
     val password: String,
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val goals: List<Goal> = listOf()
 )
 fun convertToUserDTO(user: User): UserDTO {
     return UserDTO(user.id, user.nickname, user.password)

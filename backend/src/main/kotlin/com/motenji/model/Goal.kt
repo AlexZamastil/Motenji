@@ -1,29 +1,28 @@
 package com.motenji.model
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@Entity
-@Table(name = "goal")
+@Table("goal")
 data class Goal(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "goal_id")
+    @Column("goal_id")
     var id: Long? = null,
-    @Column(name = "name")
+    @Column("name")
     val name: String,
-    @Column(name = "measurable")
+    @Column("measurable")
     val measurable: Boolean,
-    @Column(name = "deadline")
+    @Column("deadline")
     val deadline: LocalDate,
-    @Column(name = "progress")
+    @Column("progress")
     var progress: Double,
-    @Column(name = "created")
+    @Column("created")
     val created: LocalDateTime = LocalDateTime.now(),
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: User
+    @Column("user_id")
+    val userId: Long
 )
 
 

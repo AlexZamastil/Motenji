@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class SecurityConfiguration {
     private val HEADERS = arrayOf("Authorization", "content-type")
     private val EXPOSED_HEADERS = arrayOf("Authorization")
-    private val ORIGINS = arrayOf(System.getenv("fe_origin"))
+    private val ORIGINS = System.getenv("fe_origin")?.split(", ")?.map { it.trim() }?.toTypedArray()?: arrayOf()
     private val METHODS = arrayOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
     @Bean
     fun filterChain(http: HttpSecurity, authFilter: AuthFilter): SecurityFilterChain {
@@ -23,11 +23,12 @@ class SecurityConfiguration {
         http.cors{}
             .csrf {it.disable()}
             .authorizeHttpRequests {
+                it.requestMatchers("/ws/**").permitAll()
                 it.requestMatchers("/user/register").permitAll()
-                it.requestMatchers("user/login").permitAll()
+                it.requestMatchers("/user/login").permitAll()
                 it.requestMatchers("/goal/**").authenticated()
                 it.requestMatchers("/user/**").authenticated()
-                it.anyRequest().permitAll()
+                it.anyRequest().authenticated()
             }
             .sessionManagement() {it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)}
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter::class.java)
@@ -39,12 +40,13 @@ class SecurityConfiguration {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
                 registry.addMapping("/**")
+                    .allowCredentials(false)
                     .allowedHeaders(*HEADERS)
                     .exposedHeaders(*EXPOSED_HEADERS)
-                    .allowedOrigins(*ORIGINS)
+                    .allowedOriginPatterns(*ORIGINS)
                     .allowedMethods(*METHODS)
+
             }
         }
     }
-
 }

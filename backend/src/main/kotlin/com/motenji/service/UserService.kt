@@ -17,7 +17,7 @@ class UserService(
     private val jwtService: JwtService
 ) {
 
-    fun login(userDTO: UserDTO): ResponseEntity<ResponseWrapper<String>> {
+    suspend fun login(userDTO: UserDTO): ResponseEntity<ResponseWrapper<String>> {
         val user = userRepo.findUserByNickname(userDTO.username) ?: return ResponseFactory.notFound("User not found")
         if (user.password == userDTO.password) {
             val token = jwtService.generateToken(user)
@@ -27,23 +27,22 @@ class UserService(
         }
     }
 
-    fun registerUser(registerDto: RegisterDTO): ResponseEntity<ResponseWrapper<String>> {
+    suspend fun registerUser(registerDto: RegisterDTO): ResponseEntity<ResponseWrapper<String>> {
         if (registerDto.password != registerDto.passwordConfirm) {
             return ResponseFactory.badRequest("Passwords don't match")
         }
         if (userRepo.existsUserByNickname(registerDto.username)) {
             return ResponseFactory.badRequest("User with the same nickname already exists")
         }
-        val user = User(null, registerDto.username, registerDto.password, emptyList())
+        val user = User(null, registerDto.username, registerDto.password)
         userRepo.save(user)
         val token = jwtService.generateToken(user)
         return ResponseFactory.success("User registered with token: $token")
     }
 
-    fun getUserDetails(id: Long): ResponseEntity<com.motenji.utility.ResponseWrapper<UserDTO>> {
-        val userDetails = userRepo.findById(id).orElse(null)
-        return userDetails?.let { ResponseFactory.success(convertToUserDTO(it)) }
-            ?: ResponseFactory.notFound("User with ID $id not found")
+    suspend fun getUserDetails(id: Long): ResponseEntity<ResponseWrapper<UserDTO>> {
+        val userDetails = userRepo.findById(id) ?: return ResponseFactory.badRequest("User not found")
+        return userDetails.let { ResponseFactory.success(convertToUserDTO(it)) }
     }
 
 }

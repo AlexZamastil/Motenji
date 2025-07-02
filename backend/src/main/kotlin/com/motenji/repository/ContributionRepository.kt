@@ -1,12 +1,11 @@
 package com.motenji.repository
 
 import com.motenji.model.Contribution
-import com.motenji.model.Goal
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ContributionRepository : JpaRepository<Contribution, Long>{
-    fun findAllByGoal(goal: Goal): MutableList<Contribution>
-    fun findByContributionId(contributionId: Long): Contribution?
+interface ContributionRepository : CoroutineCrudRepository<Contribution, Long>{
+    suspend fun findAllByGoalId(goalId: Long?): MutableList<Contribution>?
+    suspend fun findByContributionId(contributionId: Long?): Contribution?
 }
