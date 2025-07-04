@@ -19,10 +19,10 @@
     "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@stomp/stompjs": "^7.1.1",
+    "buffer": "^6.0.3",
     "rxjs": "~7.8.0",
     "sockjs": "^0.3.24",
     "sockjs-client": "^1.6.1",
-    "stompjs": "^2.3.3",
     "tslib": "^2.3.0",
     "ws": "^8.18.2",
     "zone.js": "~0.15.0"

@@ -10,7 +10,7 @@ class ChatController {
 
     @MessageMapping("/chat")
     @SendTo("/topic/chat")
-    suspend fun sendChatMessage(chatMessageDTO: ChatMessageDTO): ChatMessageDTO {
+    fun sendChatMessage(chatMessageDTO: ChatMessageDTO): ChatMessageDTO {
         println("Sending a chat message!")
         return chatMessageDTO.copy()
     }

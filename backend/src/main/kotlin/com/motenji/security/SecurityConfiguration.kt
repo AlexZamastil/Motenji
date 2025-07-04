@@ -45,7 +45,6 @@ class SecurityConfiguration {
                     .exposedHeaders(*EXPOSED_HEADERS)
                     .allowedOriginPatterns(*ORIGINS)
                     .allowedMethods(*METHODS)
-
             }
         }
     }

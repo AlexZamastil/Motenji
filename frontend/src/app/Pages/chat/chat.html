@@ -1,7 +1,18 @@
-<input [(ngModel)]="from" placeholder="Your name" matInput>
-<input [(ngModel)]="text" placeholder="Message" matInput>
-<button (click)="sendMessage()">Send Message</button>
+<div class="div1">
 
-@for (msg of messages; track messages){
-  <div><strong>{{ msg.username }}:</strong> {{ msg.message }}</div>
-}
+  <input [(ngModel)]="from" placeholder="Your name" matInput>
+  <input [(ngModel)]="text" placeholder="Message" matInput>
+  <button (click)="sendMessage()">Send Message</button>
+</div>
+
+<div class="div2">
+  @for (msg of messages; track msg) {
+    <div [style.backgroundColor]="msg.color">
+      <div>
+        <strong>{{msg.username}}:</strong> {{ msg.message }}
+      </div>
+      <div>{{ msg.time }}</div>
+    </div>
+  }
+</div>
+

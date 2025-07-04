@@ -9,5 +9,4 @@ import {Navbar} from './Components/navbar/navbar';
   styleUrl: './app.css'
 })
 export class App {
-  protected title = 'motenji';
 }
