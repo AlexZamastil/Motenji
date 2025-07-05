@@ -8,7 +8,8 @@ import {RouterModule} from '@angular/router';
   styleUrl: './navbar.css'
 })
 export class Navbar {
-    isLoggedIn(): boolean {
-      return localStorage.getItem('token') !== null;
+  constructor() {}
+      isLoggedIn(): boolean {
+      return (localStorage.getItem("userID") != null && localStorage.getItem("token") != null);
     }
 }

@@ -21,7 +21,7 @@ class UserService(
         val user = userRepo.findUserByNickname(userDTO.username) ?: return ResponseFactory.notFound("User not found")
         if (user.password == userDTO.password) {
             val token = jwtService.generateToken(user)
-            return ResponseFactory.success("login successful with token: $token")
+            return ResponseFactory.success("$token X ${user.id}")
         } else {
             return ResponseFactory.badRequest("incorrect password")
         }
@@ -37,10 +37,11 @@ class UserService(
         val user = User(null, registerDto.username, registerDto.password)
         userRepo.save(user)
         val token = jwtService.generateToken(user)
-        return ResponseFactory.success("User registered with token: $token")
+        return ResponseFactory.success("$token X ${user.id}")
     }
 
     suspend fun getUserDetails(id: Long): ResponseEntity<ResponseWrapper<UserDTO>> {
+        println(">> GET USER DETAILS CALLED — ID = $id")
         val userDetails = userRepo.findById(id) ?: return ResponseFactory.badRequest("User not found")
         return userDetails.let { ResponseFactory.success(convertToUserDTO(it)) }
     }

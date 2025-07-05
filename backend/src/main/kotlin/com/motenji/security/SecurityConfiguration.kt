@@ -2,49 +2,57 @@ package com.motenji.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.security.authentication.ReactiveAuthenticationManager
+import org.springframework.security.config.web.server.ServerHttpSecurity
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder
+import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.security.web.server.authentication.AuthenticationWebFilter
+import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher
+import org.springframework.web.reactive.config.WebFluxConfigurer
 
 @Configuration
-@EnableWebSecurity
+@EnableWebFluxSecurity
 class SecurityConfiguration {
-    private val HEADERS = arrayOf("Authorization", "content-type")
-    private val EXPOSED_HEADERS = arrayOf("Authorization")
-    private val ORIGINS = System.getenv("fe_origin")?.split(", ")?.map { it.trim() }?.toTypedArray()?: arrayOf()
-    private val METHODS = arrayOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+    private val headers = arrayOf("Authorization", "content-type")
+    private val exposedHeaders = arrayOf("Authorization")
+    private val origins = System.getenv("fe_origin")?.split(", ")?.map { it.trim() }?.toTypedArray()?: arrayOf()
+    private val methods = arrayOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+    private val jwtService = JwtService()
+
     @Bean
-    fun filterChain(http: HttpSecurity, authFilter: AuthFilter): SecurityFilterChain {
+    fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
+        val authManager = reactiveAuthManager(jwtService = jwtService)
+        val authFilter = AuthenticationWebFilter(authManager)
+        authFilter.setServerAuthenticationConverter(JwtAuthConverter())
+        authFilter.setRequiresAuthenticationMatcher(PathPatternParserServerWebExchangeMatcher("/user/**"))
 
-        http.cors{}
+       return http.cors{}
             .csrf {it.disable()}
-            .authorizeHttpRequests {
-                it.requestMatchers("/ws/**").permitAll()
-                it.requestMatchers("/user/register").permitAll()
-                it.requestMatchers("/user/login").permitAll()
-                it.requestMatchers("/goal/**").authenticated()
-                it.requestMatchers("/user/**").authenticated()
-                it.anyRequest().authenticated()
+            .authorizeExchange {
+                it.pathMatchers("/ws").permitAll()
+                it.pathMatchers("/user/register").permitAll()
+                it.pathMatchers("/user/login").permitAll()
+                it.pathMatchers("/goal/**").authenticated()
+                it.pathMatchers("/user/**").authenticated()
+                it.anyExchange().authenticated()
             }
-            .sessionManagement() {it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)}
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter::class.java)
-
-        return http.build()
+           .addFilterAt(authFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+           .build()
     }
     @Bean
-    fun corsConfigurer(): WebMvcConfigurer {
-        return object : WebMvcConfigurer {
-            override fun addCorsMappings(registry: CorsRegistry) {
+    fun reactiveAuthManager(jwtService: JwtService): ReactiveAuthenticationManager = CustomReactiveAuthManager(jwtService = jwtService)
+
+    @Bean
+    fun corsConfigurer(): WebFluxConfigurer {
+        return object : WebFluxConfigurer {
+            override fun addCorsMappings(registry: org.springframework.web.reactive.config.CorsRegistry) {
                 registry.addMapping("/**")
                     .allowCredentials(false)
-                    .allowedHeaders(*HEADERS)
-                    .exposedHeaders(*EXPOSED_HEADERS)
-                    .allowedOriginPatterns(*ORIGINS)
-                    .allowedMethods(*METHODS)
+                    .allowedHeaders(*headers)
+                    .exposedHeaders(*exposedHeaders)
+                    .allowedOriginPatterns(*origins)
+                    .allowedMethods(*methods)
             }
         }
     }

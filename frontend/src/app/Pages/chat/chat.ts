@@ -27,9 +27,13 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.webSocketService.connect()
     this.messageSubscription = this.webSocketService.getMessages().subscribe((message) => {
-      this.messages.push({username: message.username, message: message.message, color: message.color, time: message.time});
       console.log('Received:', message);
+      console.log(message.valueOf())
+      console.log(typeof message)
+      this.messages.push({username: message.username, message: message.message, color: message.color, time: message.time});
+
     });
     this.userChatColor = this.generateUserColor()
   }
@@ -41,7 +45,7 @@ export class Chat implements OnInit, OnDestroy {
       color: this.userChatColor,
       time : this.getCurrentTime()
     };
-    this.webSocketService.sendMessage(message);
+    this.webSocketService.sendMessage(JSON.stringify(message));
     this.text = '';
   }
 
@@ -57,6 +61,7 @@ export class Chat implements OnInit, OnDestroy {
     return `rgb(${r}, ${g}, ${b})`;
   }
   getCurrentTime(): string {
+    //simple solution - ignores time zones
     let time = new Date();
     let hours = time.getHours();
     let minutes = time.getMinutes();

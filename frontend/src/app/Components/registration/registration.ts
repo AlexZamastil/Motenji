@@ -7,6 +7,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import {CallAPI} from '../../Services/call-api';
+import {UserData} from '../../Services/user-data';
 
 @Component({
   selector: 'app-registration',
@@ -19,7 +20,7 @@ export class Registration {
       nickname = ''
       password = ''
       passwordConfirm = ''
-      constructor(private api: CallAPI) {
+      constructor(private api: CallAPI, private userData: UserData) {
       }
       register() {
         if (this.nickname.trim() === '' || this.password.trim() === '' || this.passwordConfirm.trim() === '') {
@@ -32,7 +33,9 @@ export class Registration {
         }
         console.log('trying to register user: ' + this.nickname)
         this.api.POST("user/register", {"username": this.nickname, "password": this.password, "passwordConfirm": this.passwordConfirm}).subscribe(
-          result => {console.log(result);}
+          result => {
+            this.userData.login(result.data)
+          }
         )
       }
 }

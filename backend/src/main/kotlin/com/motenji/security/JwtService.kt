@@ -10,7 +10,7 @@ import java.util.*
 
 @Service
 class JwtService {
-    private val secret = System.getenv("jwt_secret")
+    private val secret =  "asdsadsad"// System.getenv("JWT_SECRET")
     private val expirationLength = 60 * 60 * 1000
     private val algorithm = Algorithm.HMAC256(secret)
 
@@ -19,7 +19,8 @@ class JwtService {
         val expirationTime = Date(now.time + expirationLength)
 
         return JWT.create()
-            .withClaim("user_id", user.id.toString())
+            .withClaim("user_id", user.id)
+            .withClaim("username", user.nickname)
             .withIssuedAt(now)
             .withExpiresAt(expirationTime)
             .sign(algorithm)
@@ -38,7 +39,7 @@ class JwtService {
     fun getTokenData(token: String): JWTDataDTO? {
         try {
             val decoded = JWT.require(algorithm).build().verify(token)
-            return JWTDataDTO(decoded.getClaim("user_id").asString(), "user")
+            return JWTDataDTO(decoded.getClaim("user_id").asLong() ,decoded.getClaim("username").asString(), "user")
         } catch (e: JWTVerificationException) {
             e.printStackTrace()
             return null

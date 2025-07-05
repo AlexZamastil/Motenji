@@ -1,4 +1,43 @@
 import { Injectable } from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class WebSocketService {
+  private ws: WebSocket;
+  private messageSubject = new Subject<string>();
+
+  connect() {
+    this.ws = new WebSocket('ws://localhost:8080/ws');
+
+    this.ws.onmessage = (message) => {
+      this.messageSubject.next(JSON.parse(message.data.toString()));
+    }
+    this.ws.onclose = () => {console.log("Connection closed")};
+    this.ws.onopen = () => {console.log("Connection opened")};
+  }
+
+  sendMessage(message: string) {
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(message);
+    } else {
+      console.log("Websocket not connected");
+    }
+  }
+  getMessages(): Observable<any> {
+    return this.messageSubject.asObservable();
+  }
+
+  closeConnection() {
+    this.ws.close()
+  }
+}
+
+
+// STOMP PROTOCOL APPROACH
+/*
+import { Injectable } from '@angular/core';
 import { Client, Message, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Subject } from 'rxjs';
@@ -55,3 +94,4 @@ export class WebSocketService {
     this.stompClient.deactivate().then(r => console.log(r));
   }
 }
+*/

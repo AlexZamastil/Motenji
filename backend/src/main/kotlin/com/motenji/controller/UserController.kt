@@ -26,6 +26,7 @@ class UserController(
 
     @GetMapping("/getDetails/{id}")
     suspend fun getUser(@PathVariable id: String): ResponseEntity<ResponseWrapper<UserDTO>> {
+        println(">>> CONTROLLER getUser() called with ID = $id")
         return userService.getUserDetails(id.toLong())
     }
 }

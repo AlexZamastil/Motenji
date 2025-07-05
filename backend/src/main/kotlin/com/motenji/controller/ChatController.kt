@@ -1,5 +1,5 @@
 package com.motenji.controller
-
+/*
 import com.motenji.DTO.ChatMessageDTO
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
@@ -14,4 +14,4 @@ class ChatController {
         println("Sending a chat message!")
         return chatMessageDTO.copy()
     }
-}
+}*/

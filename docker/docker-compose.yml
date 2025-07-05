@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  #DATABASE
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+
+    environment:
+      POSTGRES_DB: motenji
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - skillmatrix-net
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    networks:
+      - skillmatrix-net
+  #BACKEND
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../backend/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      FE_ORIGIN: ${FE_ORIGIN}
+      JWT_SECRET: ${JWT_SECRET}
+      DB_ADDRESS: ${DB_ADDRESS}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PASSWORD: ${PASSWORD}
+    env_file:
+      - .env
+    networks:
+      - skillmatrix-net
+    restart: on-failure
+
+  #FRONTEND
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../frontend/Dockerfile
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    networks:
+      - skillmatrix-net
+    restart: on-failure
+
+networks:
+  skillmatrix-net:
+
+volumes:
+  db-data:
