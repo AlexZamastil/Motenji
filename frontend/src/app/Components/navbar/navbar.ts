@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterModule} from '@angular/router';
+import {UserData} from '../../Services/user-data';
 
 @Component({
   selector: 'app-navbar',
@@ -8,8 +9,7 @@ import {RouterModule} from '@angular/router';
   styleUrl: './navbar.css'
 })
 export class Navbar {
-  constructor() {}
-      isLoggedIn(): boolean {
-      return (localStorage.getItem("userID") != null && localStorage.getItem("token") != null);
-    }
+  constructor(public userdata: UserData) {
+
+  }
 }

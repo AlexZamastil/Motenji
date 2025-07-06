@@ -3,6 +3,7 @@ import {Homepage} from './Pages/homepage/homepage';
 import {Profile} from './Pages/profile/profile';
 import {SignIn} from './Pages/sign-in/sign-in';
 import {Chat} from './Pages/chat/chat';
+import {CreateGoal} from './Pages/create-goal/create-goal';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -10,4 +11,5 @@ export const routes: Routes = [
   {path: 'signIn', component: SignIn},
   {path: 'profile', component: Profile},
   {path: 'chat', component: Chat},
+  {path: 'createGoal', component: CreateGoal},
 ];

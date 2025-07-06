@@ -41,7 +41,6 @@ class UserService(
     }
 
     suspend fun getUserDetails(id: Long): ResponseEntity<ResponseWrapper<UserDTO>> {
-        println(">> GET USER DETAILS CALLED — ID = $id")
         val userDetails = userRepo.findById(id) ?: return ResponseFactory.badRequest("User not found")
         return userDetails.let { ResponseFactory.success(convertToUserDTO(it)) }
     }

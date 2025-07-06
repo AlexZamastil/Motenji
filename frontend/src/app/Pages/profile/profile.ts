@@ -4,8 +4,10 @@ import {Router} from '@angular/router';
 import {CallAPI} from '../../Services/call-api';
 import {UserData} from '../../Services/user-data';
 
+
 @Component({
   selector: 'app-profile',
+  standalone: true,
   imports: [
     MatButton
   ],
@@ -13,19 +15,30 @@ import {UserData} from '../../Services/user-data';
   styleUrl: './profile.css'
 })
 export class Profile {
-  constructor(private router: Router, private callAPI: CallAPI, private userData: UserData) {
-  }
-  userDetails:any
+  constructor(private router: Router, private callAPI: CallAPI, private userData: UserData) {}
+  userDetails:any = null
+  goalsDetails:any = null
 
   queryUserData(){
-    if (this.userData != null){
       console.log("QUERY USER DATA");
       this.callAPI.GET("user/getDetails/"+localStorage.getItem("userID")).subscribe(data=>{
-        this.userDetails = data;
+        this.userDetails = data.data;
         console.log(this.userDetails);
       })
-    }
+      console.log("QUERY GOAL DATA");
+      this.callAPI.GET("goal/getUserGoals/"+localStorage.getItem("userID")).subscribe(data=> {
+        if(data.data.length > 0 ){
+          this.goalsDetails = data.data;
+        } else {
+          this.goalsDetails = "You don't have any active goals yet";
+        }
+        console.log(this.goalsDetails);
+      })
   }
+  createGoalRedirect(){
+    this.router.navigate(['/createGoal']);
+  }
+
   ngOnInit() {
     this.queryUserData()
   }

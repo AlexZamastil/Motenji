@@ -9,6 +9,9 @@ import org.springframework.security.config.web.server.SecurityWebFiltersOrder
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter
 import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsConfigurationSource
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import org.springframework.web.reactive.config.WebFluxConfigurer
 
 @Configuration
@@ -16,7 +19,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer
 class SecurityConfiguration {
     private val headers = arrayOf("Authorization", "content-type")
     private val exposedHeaders = arrayOf("Authorization")
-    private val origins = System.getenv("fe_origin")?.split(", ")?.map { it.trim() }?.toTypedArray()?: arrayOf()
+    private val origins = System.getenv("FE_ORIGIN")?.split(", ")?.map { it.trim() }?.toTypedArray()?: arrayOf()
     private val methods = arrayOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
     private val jwtService = JwtService()
 
@@ -25,7 +28,7 @@ class SecurityConfiguration {
         val authManager = reactiveAuthManager(jwtService = jwtService)
         val authFilter = AuthenticationWebFilter(authManager)
         authFilter.setServerAuthenticationConverter(JwtAuthConverter())
-        authFilter.setRequiresAuthenticationMatcher(PathPatternParserServerWebExchangeMatcher("/user/**"))
+        authFilter.setRequiresAuthenticationMatcher(PathPatternParserServerWebExchangeMatcher("/**"))
 
        return http.cors{}
             .csrf {it.disable()}
@@ -44,16 +47,16 @@ class SecurityConfiguration {
     fun reactiveAuthManager(jwtService: JwtService): ReactiveAuthenticationManager = CustomReactiveAuthManager(jwtService = jwtService)
 
     @Bean
-    fun corsConfigurer(): WebFluxConfigurer {
-        return object : WebFluxConfigurer {
-            override fun addCorsMappings(registry: org.springframework.web.reactive.config.CorsRegistry) {
-                registry.addMapping("/**")
-                    .allowCredentials(false)
-                    .allowedHeaders(*headers)
-                    .exposedHeaders(*exposedHeaders)
-                    .allowedOriginPatterns(*origins)
-                    .allowedMethods(*methods)
-            }
-        }
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowCredentials = false
+        configuration.allowedHeaders = headers.asList()
+        configuration.allowedMethods = methods.asList()
+        configuration.exposedHeaders = exposedHeaders.asList()
+        configuration.allowedOriginPatterns = origins.asList()
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
     }
 }

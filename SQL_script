@@ -1,0 +1,25 @@
+CREATE TABLE users (
+    user_id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE goal (
+    goal_id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    measurable BOOLEAN NOT NULL,
+    deadline DATE NOT NULL,
+    progress DOUBLE PRECISION NOT NULL,
+    created TIMESTAMP NOT NULL,
+    user_id BIGINT NOT NULL,
+    CONSTRAINT fk_goal_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE contribution (
+    contribution_id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    percentage INTEGER,
+    date DATE NOT NULL,
+    goal_id BIGINT NOT NULL,
+    CONSTRAINT fk_contribution_goal FOREIGN KEY (goal_id) REFERENCES goal(goal_id) ON DELETE CASCADE
+);

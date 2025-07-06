@@ -1,0 +1,21 @@
+<h2> Create New Goal</h2>
+<form (ngSubmit)=createGoal() #form="ngForm">
+<div class="div1">
+  <input type="text" [(ngModel)]="goalData.name" name="goal name" />
+</div>
+
+<div class="div1">
+  <label style="font-family: sans-serif; font-size: 14px;">
+    <input type="checkbox" [(ngModel)]="goalData.measurable" name="measurable" />
+    Measurable
+  </label>
+</div>
+
+<div class="div1">
+  <input type="date" [(ngModel)]="goalData.deadline" name = "deadline" />
+</div>
+
+<div class="div1">
+  <button >Create Goal</button>
+</div>
+</form>

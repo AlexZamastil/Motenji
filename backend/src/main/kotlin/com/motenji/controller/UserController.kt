@@ -2,6 +2,7 @@ package com.motenji.controller
 
 import com.motenji.DTO.RegisterDTO
 import com.motenji.DTO.UserDTO
+import com.motenji.utility.ResponseFactory
 import com.motenji.utility.ResponseWrapper
 
 import jakarta.validation.Valid
@@ -26,7 +27,6 @@ class UserController(
 
     @GetMapping("/getDetails/{id}")
     suspend fun getUser(@PathVariable id: String): ResponseEntity<ResponseWrapper<UserDTO>> {
-        println(">>> CONTROLLER getUser() called with ID = $id")
         return userService.getUserDetails(id.toLong())
     }
 }

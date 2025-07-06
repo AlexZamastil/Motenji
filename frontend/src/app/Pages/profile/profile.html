@@ -1,17 +1,38 @@
-<p>profile works!</p>
-
 <div class="mainContainer">
 
-<div class="userInfo">
-  <p>:]</p>
-</div>
+  <div class="userInfo">
+    {{ userDetails.username }}
+  </div>
 
-<div class="mainGraph">
-  <p>:]</p>
-</div>
+  <div class="mainGraph">
+    <div>
+    </div>
+  </div>
 
-<div class="goalsOverview">
-  <p>:]</p>
+  <div class="goalsOverview">
+    <table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Deadline</th>
+        <th>Progress</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (goal of goalsDetails; track goal) {
+          <tr>
+            <td>{{ goal.name }}</td>
+            <td>{{ goal.deadline }}</td>
+            <td>{{ goal.progress }}%</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <br/><br/>
+
+    <button (click)="createGoalRedirect()" mat-button color="primary">Create a new goal</button>
+  </div>
+
 </div>
-</div>
-<button (click)="logout()" matButton="tonal" type="submit" color="red"  >Logout</button>
+<button (click)="logout()" matButton="tonal" type="submit" color="red">Logout</button>

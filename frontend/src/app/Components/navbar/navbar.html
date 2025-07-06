@@ -1,7 +1,7 @@
 <nav>
   <a routerLink="" routerLinkActive="active">Home</a>
 
-  @if (!isLoggedIn()) {
+  @if (!userdata.loggedIn()) {
     <a routerLink="signIn" routerLinkActive="active">Sign in</a>
   } @else {
     <a routerLink="profile" routerLinkActive="active">Profile</a>
