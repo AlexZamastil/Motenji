@@ -16,7 +16,7 @@ class CustomReactiveAuthManager(private val jwtService: JwtService) : ReactiveAu
             if (userData != null) {
                 val auth = UsernamePasswordAuthenticationToken(
                     userData.nickname,
-                    null,
+                    token,
                     listOf(SimpleGrantedAuthority("ROLE_USER"))
                 )
                 Mono.just(auth)

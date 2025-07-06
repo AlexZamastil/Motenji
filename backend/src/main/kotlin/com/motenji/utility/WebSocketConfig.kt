@@ -34,7 +34,6 @@ class WebSocketConfig {
                     .map { session.textMessage(it) }
             )
             Mono.zip(incomingMessages, outgoingMessages).then()
-
         }
     }
 

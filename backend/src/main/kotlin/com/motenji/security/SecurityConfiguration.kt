@@ -12,7 +12,6 @@ import org.springframework.security.web.server.util.matcher.PathPatternParserSer
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsConfigurationSource
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
-import org.springframework.web.reactive.config.WebFluxConfigurer
 
 @Configuration
 @EnableWebFluxSecurity
@@ -27,7 +26,7 @@ class SecurityConfiguration {
     fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         val authManager = reactiveAuthManager(jwtService = jwtService)
         val authFilter = AuthenticationWebFilter(authManager)
-        authFilter.setServerAuthenticationConverter(JwtAuthConverter())
+        authFilter.setServerAuthenticationConverter(JwtAuthConverter(jwtService))
         authFilter.setRequiresAuthenticationMatcher(PathPatternParserServerWebExchangeMatcher("/**"))
 
        return http.cors{}
