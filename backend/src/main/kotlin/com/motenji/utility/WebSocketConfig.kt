@@ -18,7 +18,6 @@ class WebSocketConfig {
     @Bean
     fun webSocketHandler(): WebSocketHandler {
         return WebSocketHandler { session: WebSocketSession ->
-
             val incomingMessages = session.receive()
                 .map {
                     it.payloadAsText
@@ -33,7 +32,7 @@ class WebSocketConfig {
                 messageSink.asFlux()
                     .map { session.textMessage(it) }
             )
-            Mono.zip(incomingMessages, outgoingMessages).then()
+            Mono.`when`(incomingMessages, outgoingMessages)
         }
     }
 

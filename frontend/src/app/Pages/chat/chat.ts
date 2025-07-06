@@ -65,6 +65,9 @@ export class Chat implements OnInit, OnDestroy {
     let time = new Date();
     let hours = time.getHours();
     let minutes = time.getMinutes();
+    if(minutes < 10) {
+      return `${hours}:0${minutes}`;
+    }
     return `${hours}:${minutes}`;
   }
 }

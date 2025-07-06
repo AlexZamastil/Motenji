@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
+  standalone: true,
   templateUrl: './create-goal.html',
   styleUrl: './create-goal.css'
 })

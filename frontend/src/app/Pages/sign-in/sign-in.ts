@@ -8,6 +8,7 @@ import {Registration} from '../../Components/registration/registration';
     Login,
     Registration
   ],
+  standalone: true,
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css'
 })

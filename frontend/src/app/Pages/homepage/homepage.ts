@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {Login} from '../../Components/login/login';
 
 @Component({
   selector: 'app-homepage',
   imports: [
   ],
+  standalone: true,
   templateUrl: './homepage.html',
   styleUrl: './homepage.css'
 })

@@ -13,6 +13,7 @@ import {UserData} from '../../Services/user-data';
     MatInput,
     ReactiveFormsModule
   ],
+  standalone: true,
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
