@@ -39,7 +39,7 @@ class GoalService(
     suspend fun getAllGoalsOfUser(userId: Long): ResponseEntity<ResponseWrapper<List<GoalInfoDTO>>> {
         val goals: List<GoalInfoDTO> = goalRepository.findAllByUserId(userId)
         return if (goals.isEmpty()) {
-            ResponseFactory.notFound("Goals for this user not found")
+            ResponseFactory.success(emptyList(),"Goals for this user not found")
         } else ResponseFactory.success(goals)
     }
 
