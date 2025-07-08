@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Navbar } from './navbar';
+import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {CallAPI} from '../../Services/call-api';
+import {ActivatedRoute} from '@angular/router';
 
 describe('Navbar', () => {
   let component: Navbar;
@@ -8,7 +12,13 @@ describe('Navbar', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Navbar]
+      imports: [Navbar],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        CallAPI,
+        {provide: ActivatedRoute, useValue: {}}
+      ]
     })
     .compileComponents();
 

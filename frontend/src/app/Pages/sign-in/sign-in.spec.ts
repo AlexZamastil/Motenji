@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SignIn } from './sign-in';
+import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {CallAPI} from '../../Services/call-api';
 
 describe('SignIn', () => {
   let component: SignIn;
@@ -8,7 +11,12 @@ describe('SignIn', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SignIn]
+      imports: [SignIn],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        CallAPI
+      ]
     })
     .compileComponents();
 

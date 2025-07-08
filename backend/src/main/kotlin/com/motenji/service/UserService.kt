@@ -35,9 +35,9 @@ class UserService(
             return ResponseFactory.badRequest("User with the same nickname already exists")
         }
         val user = User(null, registerDto.username, registerDto.password)
-        userRepo.save(user)
+        val savedUser = userRepo.save(user)
         val token = jwtService.generateToken(user)
-        return ResponseFactory.success("$token X ${user.id}")
+        return ResponseFactory.success("$token X ${savedUser.id}")
     }
 
     suspend fun getUserDetails(id: Long): ResponseEntity<ResponseWrapper<UserDTO>> {

@@ -10,24 +10,32 @@
   </div>
 
   <div class="goalsOverview">
-    <table>
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Deadline</th>
-        <th>Progress</th>
-      </tr>
-      </thead>
-      <tbody>
-        @for (goal of goalsDetails; track goal) {
-          <tr>
-            <td>{{ goal.name }}</td>
-            <td>{{ goal.deadline }}</td>
-            <td>{{ goal.progress }}%</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    <div> @if (hasGoals) {
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Deadline</th>
+          <th>Progress</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (goal of goalsDetails; track goal.name) {
+            <tr>
+              <td>{{ goal.name }}</td>
+              <td>{{ goal.deadline }}</td>
+              <td>{{ goal.progress }}%</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p>You don't have any active goals yet</p>
+    }
+
+
+    </div>
+
 
     <br/><br/>
 

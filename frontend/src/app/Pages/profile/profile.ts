@@ -18,7 +18,7 @@ export class Profile {
   constructor(private router: Router, private callAPI: CallAPI, private userData: UserData) {}
   userDetails:any = null
   goalsDetails:any = null
-
+  public hasGoals:boolean = false
   queryUserData(){
       console.log("QUERY USER DATA");
       this.callAPI.GET("user/getDetails/"+localStorage.getItem("userID")).subscribe(data=>{
@@ -28,6 +28,7 @@ export class Profile {
       console.log("QUERY GOAL DATA");
       this.callAPI.GET("goal/getUserGoals/"+localStorage.getItem("userID")).subscribe(data=> {
         if(data.data.length > 0 ){
+          this.hasGoals = true;
           this.goalsDetails = data.data;
         } else {
           this.goalsDetails = "You don't have any active goals yet";
